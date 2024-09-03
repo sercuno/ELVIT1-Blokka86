@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+
+<body>
+    <header>
+        <h1>Quiz om Datamaskiner</h1>
+    </header>
+
+    <main>
+        <div class="quiz-container">
+            <h2>Hva er CPU?</h2>
+            <div class="quiz-buttons">
+                <button class="answer" id="feilID1">Harddisken, hvor programmene dine lagres</button>
+                <button class="answer" id="riktigID">Prossessoren, hjernen i datamaskinen</button>
+                <button class="answer" id="feilID2">Hovedkortet som binder delene sammen</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function handleCorrectAnswer(event) {
+            const button = event.target;
+            button.style.backgroundColor = "green";
+            button.style.color = "white";
+            button.innerText += "\n\nRIKTIG!";
+            disableButtons();
+        }
+
+        function handleIncorrectAnswer(event) {
+            const button = event.target;
+            button.style.backgroundColor = "red";
+            button.style.color = "white";
+            button.innerText += "\n\nFEIL!";
+            disableButtons();
+        }
+
+        function disableButtons() {
+            const buttons = document.querySelectorAll('.answer');
+            buttons.forEach(button => button.disabled = true);
+        }
+
+        function spaceButtons() {
+            const buttons = document.querySelectorAll('.answer');
+            buttons.forEach(button => {
+                button.style.margin = "10px 0";
+                button.style.display = "block";
+                button.style.width = "100%";
+            });
+        }
+
+        document.getElementById("riktigID").addEventListener("click", handleCorrectAnswer);
+        document.getElementById("feilID1").addEventListener("click", handleIncorrectAnswer);
+        document.getElementById("feilID2").addEventListener("click", handleIncorrectAnswer);
+
+        spaceButtons();
+    </script>
+</body>
+
+</html>
+
+
