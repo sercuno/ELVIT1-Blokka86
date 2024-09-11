@@ -1,10 +1,11 @@
- body {
-    background-color: rgb(227, 188, 130);
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(255, 255, 255);
     margin: 0;
     padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     margin: 0;
@@ -16,7 +17,7 @@ header {
     align-items: center;
     width: 100%;
     height: 100px;
-    background-color: #fbfbfb;
+    background-color: #000000;
     padding: 0 20px; 
     position: fixed;
     top: 0;
@@ -36,30 +37,49 @@ header .right-link {
     margin-right: -10px; 
 }
 
-
-a {
-    text-decoration: none;
-    color: inherit;
-    background-color: transparent; 
-    padding: 0; 
-    margin: 0; 
+header nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    font-weight: 400;
+    color: white;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header nav ul li a:hover {
+    background-color: #ddd;
+    color: #000;
+}
 
 a.button {
-    display: inline-block; 
-    padding: 10px 20px; 
-    background-color: #fbfbfb; 
-    color: black; 
-    border-radius: 5px; 
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fbfbfb;
+    color: black;
+    border-radius: 5px;
     border: 1px solid #ddd;
-    font-weight: 400; 
-    text-align: center; 
-    cursor: pointer; 
-    transition: background-color 0.3s, color 0.3s; 
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 a.button:hover {
-    background-color: #ddd; 
-    color: black; 
+    background-color: #ddd;
+    color: black;
+}
+
+main {
+    padding-top: 150px;
+    box-sizing: border-box;
 }
