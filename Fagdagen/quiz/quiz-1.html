@@ -6,19 +6,14 @@
     <title>Fagdag Quiz</title>
     <link rel="stylesheet" href="styling.css">
 </head>
-
 <body>
     <h1>Kjenner du Elvebakken?</h1>
-    
-    <div id="quiz-container">
-        <img id="quiz-image" src=".." alt="..">
+    <div id="quiz-container" role="region" aria-labelledby="quiz-question">
+        <img id="quiz-image" src="" alt="Quiz image" role="img">
         <h2 id="quiz-question">Hvilken etasje er det?</h2>
-
-        <div id="quiz-options"></div>
+        <div id="quiz-options" role="listbox"></div>
         <div id="score">Poeng: 0</div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
-

@@ -23,56 +23,104 @@ const quizData = [
 ];
 
 let currentQuestion = 0;
-let score = parseInt(localStorage.getItem('score')) || 0;  
+let score = parseInt(localStorage.getItem('score')) || 0;
 
-function updateQuiz() {
-    const currentQuiz = quizData[currentQuestion];
-    const quizContainer = document.getElementById("quiz-container");
+document.addEventListener('DOMContentLoaded', () => {
+    updateScore();
+    updateQuiz();
+});
 
-    // Update quiz content
-    document.getElementById("quiz-image").src = currentQuiz.image;
-    document.getElementById("quiz-question").innerText = currentQuiz.question;
-    document.getElementById("quiz-options").innerHTML = currentQuiz.options.map(option => `
-        <button onclick="checkAnswer('${option}')">${option}</button>
+const getElement = id => document.getElementById(id);
+
+const updateQuiz = () => {
+    const { image, question, options } = quizData[currentQuestion];
+    getElement("quiz-image").src = image;
+    getElement("quiz-question").innerText = question;
+    getElement("quiz-options").innerHTML = options.map(option => `
+        <button onclick="checkAnswer('${option}')" class="option-btn">${option}</button>
     `).join('');
-}
+    resetButtonState();
+};
 
-function checkAnswer(answer) {
-    const currentQuiz = quizData[currentQuestion];
+const checkAnswer = answer => {
+    const { correctAnswer, feedback } = quizData[currentQuestion];
+    const buttons = document.querySelectorAll(".option-btn");
 
-    if (answer === currentQuiz.correctAnswer) {
-        var correctAudio = new Audio('../lyd/Correct_Answer_sound_effect.mp3');
-        correctAudio.play();
-        document.getElementById("quiz-question").innerText = currentQuiz.feedback;
-        score++;  
-        localStorage.setItem('score', score); 
-        document.getElementById("score").innerText = `Poeng: ${score}`;  
-        document.getElementById("quiz-options").innerHTML = `
-            <button onclick="nextQuestion()">Neste Spørsmål</button>
-        `;
+    buttons.forEach(btn => btn.disabled = true);
+
+    if (answer === correctAnswer) {
+        playAudio('../lyd/Correct_Answer_sound_effect.mp3');
+        getElement("quiz-question").innerText = feedback;
+        highlightCorrectAnswer(answer);
+        score++;
+        updateScore();
+        showButton('next');
     } else {
-        var wrong_audio = new Audio('../lyd/Wrong_Sound_Effect.mp3');
-        wrong_audio.play();
-        score = score - 1;
-        alert("Feil svar. Prøv igjen!");
+        playAudio('../lyd/Wrong_Sound_Effect.mp3');
+        highlightWrongAnswer(answer);
+        score--;
+        updateScore();
+        showButton('retry');
     }
-}
+};
 
-function nextQuestion() {
+const playAudio = src => {
+    if (!src) return;
+    const audio = new Audio(src);
+    audio.play().catch(error => console.error('Audio playback failed:', error));
+};
+
+const highlightCorrectAnswer = correctAnswer => {
+    document.querySelectorAll(".option-btn").forEach(btn => {
+        if (btn.innerText === correctAnswer) btn.classList.add('correct');
+    });
+};
+
+const highlightWrongAnswer = wrongAnswer => {
+    document.querySelectorAll(".option-btn").forEach(btn => {
+        if (btn.innerText === wrongAnswer) btn.classList.add('wrong');
+    });
+};
+
+const showButton = type => {
+    const buttonHtml = type === 'next'
+        ? `<button onclick="nextQuestion()">Neste Spørsmål</button>`
+        : `<button onclick="retryQuestion()">Prøv igjen</button>`;
+    getElement("quiz-options").innerHTML += buttonHtml;
+};
+
+const resetButtonState = () => {
+    document.querySelectorAll(".option-btn").forEach(btn => {
+        btn.classList.remove('correct', 'wrong');
+        btn.disabled = false;
+    });
+};
+
+const retryQuestion = () => updateQuiz();
+
+const nextQuestion = () => {
     currentQuestion++;
-
     if (currentQuestion < quizData.length) {
         updateQuiz();
     } else {
-        document.getElementById("quiz-container").innerHTML = `
-            <h2>Gratulerer! Du fullførte quizzen.</h2>
-            <p>Din sluttpoengsum er: ${score}</p>
-        `;
-        localStorage.removeItem('score');  
+        finishQuiz();
     }
-}
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("score").innerText = `Poeng: ${score}`;
-    updateQuiz();
-});
+const updateScore = () => {
+    localStorage.setItem('score', score);
+    getElement("score").innerText = `Poeng: ${score}`;
+};
+
+const finishQuiz = () => {
+    getElement("quiz-container").innerHTML = `
+        <h2>Gratulerer! Du fullførte quizzen.</h2>
+        <p>Din sluttpoengsum er: ${score}</p>
+        <button onclick="restartQuiz()">Start på nytt</button>
+    `;
+    localStorage.removeItem('score');
+};
+
+const restartQuiz = () => {
+    location.reload();
+};
