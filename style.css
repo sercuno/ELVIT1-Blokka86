@@ -1,0 +1,29 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px; 
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-style: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+button:hover {
+    background-color: rgb(163, 161, 161); 
+    color: #000; 
+} 

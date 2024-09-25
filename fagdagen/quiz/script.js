@@ -1,20 +1,20 @@
 const quizData = [
     {
-        image: "../media/bilder/Hoved_Etasje.jpg",
+        image: "./media/bilder/Hoved_Etasje.jpg",
         question: "Hva er denne etasjen i denne bygningen?",
         correctAnswer: "Hoved Etasje",
         options: ["Hoved Etasje", "Tredje Etasje", "Fjerde Etasje"],
         feedback: "Riktig! Dette er hovedetasjen."
     },
     {
-        image: "../media/bilder/O377.jpg",
+        image: "./media/bilder/O377.jpg",
         question: "Hvilket klasserom er dette?",
         correctAnswer: "Ø377",
         options: ["Ø377", "V412", "S101"],
         feedback: "Bra jobbet! Dette er Ø377"
     },
     {
-        image: "../media/bilder/camilla_h.jpg",
+        image: "./media/bilder/camilla_h.jpg",
         question: "Hvem er rektor ved denne skolen?",
         correctAnswer: "Camilla Hauren Leirvik",
         options: ["Espen Rueness", "Camilla Hauren Leirvik", "Kristin Olstad"],
@@ -23,11 +23,16 @@ const quizData = [
 ];
 
 let currentQuestion = 0;
-let score = parseInt(localStorage.getItem('score')) || 0;
+let poeng = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    updateScore();
+    const urlParams = new URLSearchParams(window.location.search);
+    const externalScore = parseInt(urlParams.get('externalScore')) || 0;
+    const localPoeng = parseInt(urlParams.get('poeng')) || 0;
+    poeng = externalScore + localPoeng;
+    updatePoeng();
     updateQuiz();
+    updateLinkWithPoeng(); // Ensure link is set on load
 });
 
 const getElement = id => document.getElementById(id);
@@ -49,19 +54,21 @@ const checkAnswer = answer => {
     buttons.forEach(btn => btn.disabled = true);
 
     if (answer === correctAnswer) {
-        playAudio('../lyd/Correct_Answer_sound_effect.mp3');
+        playAudio('./lyd/Correct_Answer_sound_effect.mp3');
         getElement("quiz-question").innerText = feedback;
         highlightCorrectAnswer(answer);
-        score++;
-        updateScore();
+        poeng++;
+        updatePoeng();
         showButton('next');
     } else {
-        playAudio('../lyd/Wrong_Sound_Effect.mp3');
+        playAudio('./lyd/Wrong_Sound_Effect.mp3');
         highlightWrongAnswer(answer);
-        score--;
-        updateScore();
+        poeng--;
+        updatePoeng();
         showButton('retry');
     }
+
+    updateLinkWithPoeng(); // Update the link with the current score after each answer
 };
 
 const playAudio = src => {
@@ -98,29 +105,31 @@ const resetButtonState = () => {
 
 const retryQuestion = () => updateQuiz();
 
+const updatePoeng = () => {
+    localStorage.setItem('poeng', poeng);
+    getElement("score").innerText = `Poeng: ${poeng}`;
+};
+
 const nextQuestion = () => {
     currentQuestion++;
     if (currentQuestion < quizData.length) {
         updateQuiz();
     } else {
-        finishQuiz();
+        updateLinkWithPoeng(); // Update link with the final score
+        setTimeout(() => {
+            window.location.href = `https://elvit1-blokka-90.w3spaces.com/fagdagen/index.html?poeng=${poeng}`;
+        }, 1000); // Delay of 1 second before redirecting
     }
 };
 
-const updateScore = () => {
-    localStorage.setItem('score', score);
-    getElement("score").innerText = `Poeng: ${score}`;
-};
-
-const finishQuiz = () => {
-    getElement("quiz-container").innerHTML = `
-        <h2>Gratulerer! Du fullførte quizzen.</h2>
-        <p>Din sluttpoengsum er: ${score}</p>
-        <button onclick="restartQuiz()">Start på nytt</button>
-    `;
-    localStorage.removeItem('score');
+const updateLinkWithPoeng = () => {
+    const newUrl = `https://elvit1-blokka-86.w3spaces.com/fagdagen/index.html?finalScore=${poeng}`;
+    history.replaceState(null, '', newUrl);
+    
+    console.log(`Updated link: ${newUrl}`); 
 };
 
 const restartQuiz = () => {
     location.reload();
 };
+

@@ -1,0 +1,118 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    margin: 0;  
+}
+
+header {
+    display: grid;
+    grid-template-columns: auto 1fr; 
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: #000000;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+header h1 {
+    grid-column: 1;
+    text-align: left;
+    color: white;
+    font-size: 24px;
+    margin-left: 0px;
+}
+
+.right-link {
+    grid-column: 2; 
+    text-align: right; 
+}
+
+.right-link ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; 
+    justify-content: flex-end; 
+}
+
+.right-link li {
+    margin-left: 20px; 
+}
+
+.right-link a {
+    display: inline-block; 
+    color: white; 
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+    padding: 10px 20px; 
+    background-color: #000000; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.right-link a:hover {
+    background-color: white; 
+    color: #000; 
+}
+
+body {
+    padding-top: 100px; 
+    color: #1a1a1a;
+}
+
+form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: white;
+    color: #000;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 100px;
+    resize: vertical;
+}
